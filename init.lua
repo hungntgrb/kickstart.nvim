@@ -104,6 +104,12 @@ vim.opt.number = true
 --  Experiment for yourself to see if you like it!
 vim.opt.relativenumber = true
 
+-- Indentation, tab related
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.foldmethod = 'syntax'
+
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
@@ -181,6 +187,7 @@ vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
+vim.keymap.set('n', '-', ':Oil<CR>', { desc = 'Ahaha Oil!!!' })
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -193,7 +200,10 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Hung's keymaps
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Go down and focus center' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Go up and focus center' })
-vim.keymap.set('i', '<C-k>', '<Esc>ki', { desc = 'Move up in insert mode' })
+-- vim.keymap.set('n', '<C-j>', 'ddp', { desc = 'Move current line down 1 line' })
+-- vim.keymap.set('n', '<C-k>', 'ddkkp', { desc = 'Move current line up 1 line' })
+--
+--
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -235,7 +245,15 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'ThePrimeagen/vim-be-good', -- VimBeGood Game
-
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    -- dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+  },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -916,7 +934,49 @@ require('lazy').setup({
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local harpoon = require 'harpoon'
 
+      -- REQUIRED
+      harpoon:setup()
+      -- REQUIRED
+
+      vim.keymap.set('n', '<leader>a', function()
+        harpoon:list():add()
+      end, { desc = 'Harpoon: Add current file to buffer list' })
+      vim.keymap.set('n', '<C-e>', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end, { desc = 'Harpoon: Toggle buffer list' })
+
+      vim.keymap.set('n', '<C-1>', function()
+        harpoon:list():select(1)
+      end, { desc = 'Harpoon: Go to buffer #1' })
+      vim.keymap.set('n', '<C-2>', function()
+        harpoon:list():select(2)
+      end, { desc = 'Harpoon: Go to buffer #2' })
+      vim.keymap.set('n', '<C-3>', function()
+        harpoon:list():select(3)
+      end, { desc = 'Harpoon: Go to buffer #3' })
+      vim.keymap.set('n', '<C-4>', function()
+        harpoon:list():select(4)
+      end, { desc = 'Harpoon: Go to buffer #4' })
+      vim.keymap.set('n', '<C-5>', function()
+        harpoon:list():select(5)
+      end, { desc = 'Harpoon: Go to buffer #5' })
+
+      -- Toggle previous & next buffers stored within Harpoon list
+      vim.keymap.set('n', '<C-z>', function()
+        harpoon:list():prev()
+      end, { desc = 'Harpoon: Go to previous buffer' })
+      vim.keymap.set('n', '<C-x>', function()
+        harpoon:list():next()
+      end, { desc = 'Harpoon: Go to next buffer' })
+    end,
+  },
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -938,7 +998,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
