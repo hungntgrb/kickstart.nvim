@@ -108,7 +108,7 @@ vim.opt.relativenumber = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-vim.opt.foldmethod = 'syntax'
+vim.opt.foldmethod = 'indent'
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -200,6 +200,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Hung's keymaps
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Go down and focus center' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Go up and focus center' })
+vim.keymap.set('n', '<leader>z', '"_', { desc = 'Register void' })
 -- vim.keymap.set('n', '<C-j>', 'ddp', { desc = 'Move current line down 1 line' })
 -- vim.keymap.set('n', '<C-k>', 'ddkkp', { desc = 'Move current line up 1 line' })
 --
