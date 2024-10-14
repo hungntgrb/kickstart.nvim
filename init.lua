@@ -1,25 +1,4 @@
 --[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
-
 What is Kickstart?
 
   Kickstart.nvim is *not* a distribution.
@@ -187,7 +166,7 @@ vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
-vim.keymap.set('n', '-', ':Oil<CR>', { desc = 'Ahaha Oil!!!' })
+vim.keymap.set('n', '-', ':Oil<CR>', { desc = 'Oil: Open current folder' })
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -201,8 +180,10 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Go down and focus center' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Go up and focus center' })
 vim.keymap.set('n', '<leader>z', '"_', { desc = 'Register void' })
+vim.keymap.set('n', '<leader>dl', '<cmd>Telescope diagnostics<CR>', { desc = 'Telescope: [D]iagnostics [L]ist' })
 -- vim.keymap.set('n', '<C-j>', 'ddp', { desc = 'Move current line down 1 line' })
 -- vim.keymap.set('n', '<C-k>', 'ddkkp', { desc = 'Move current line up 1 line' })
+vim.keymap.set('n', '<F5>', '<cmd>echo "This is my kingdom!"<CR>', { noremap = true, desc = 'My F5 keybind' })
 --
 --
 -- [[ Basic Autocommands ]]
@@ -246,6 +227,7 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'ThePrimeagen/vim-be-good', -- VimBeGood Game
+  'mfussenegger/nvim-dap',
   {
     'stevearc/oil.nvim',
     ---@module 'oil'
@@ -953,21 +935,18 @@ require('lazy').setup({
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end, { desc = 'Harpoon: Toggle buffer list' })
 
-      vim.keymap.set('n', '<C-1>', function()
+      vim.keymap.set('n', '<C-t>', function()
         harpoon:list():select(1)
       end, { desc = 'Harpoon: Go to buffer #1' })
-      vim.keymap.set('n', '<C-2>', function()
+      vim.keymap.set('n', '<C-h>', function()
         harpoon:list():select(2)
       end, { desc = 'Harpoon: Go to buffer #2' })
-      vim.keymap.set('n', '<C-3>', function()
+      vim.keymap.set('n', '<C-n>', function()
         harpoon:list():select(3)
       end, { desc = 'Harpoon: Go to buffer #3' })
-      vim.keymap.set('n', '<C-4>', function()
+      vim.keymap.set('n', '<C-s>', function()
         harpoon:list():select(4)
       end, { desc = 'Harpoon: Go to buffer #4' })
-      vim.keymap.set('n', '<C-5>', function()
-        harpoon:list():select(5)
-      end, { desc = 'Harpoon: Go to buffer #5' })
 
       -- Toggle previous & next buffers stored within Harpoon list
       vim.keymap.set('n', '<C-z>', function()
@@ -991,7 +970,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -1021,6 +1000,48 @@ require('lazy').setup({
     },
   },
 })
+
+vim.keymap.set('n', '<F5>', function()
+  require('dap').continue()
+end, { desc = 'DAP Continue' })
+vim.keymap.set('n', '<F10>', function()
+  require('dap').step_over()
+end, { desc = 'DAP Step Over' })
+vim.keymap.set('n', '<F11>', function()
+  require('dap').step_into()
+end, { desc = 'DAP Step Into' })
+vim.keymap.set('n', '<F12>', function()
+  require('dap').step_out()
+end, { desc = 'DAP Step Out' })
+vim.keymap.set('n', '<Leader>b', function()
+  require('dap').toggle_breakpoint()
+end, { desc = 'DAP Toggle Breakpoint' })
+vim.keymap.set('n', '<Leader>B', function()
+  require('dap').set_breakpoint()
+end, { desc = 'DAP Set Breakpoint' })
+vim.keymap.set('n', '<Leader>lp', function()
+  require('dap').set_breakpoint(nil, nil, vim.fn.input 'Log point message: ')
+end, { desc = 'DAP Log point' })
+vim.keymap.set('n', '<Leader>dr', function()
+  require('dap').repl.open()
+end, { desc = 'DAP REPL Open' })
+vim.keymap.set('n', '<Leader>dl', function()
+  require('dap').run_last()
+end, { desc = 'DAP Run last' })
+vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function()
+  require('dap.ui.widgets').hover()
+end, { desc = 'DAP Widget Hover' })
+vim.keymap.set({ 'n', 'v' }, '<Leader>dp', function()
+  require('dap.ui.widgets').preview()
+end, { desc = 'DAP Widget Preview' })
+vim.keymap.set('n', '<Leader>df', function()
+  local widgets = require 'dap.ui.widgets'
+  widgets.centered_float(widgets.frames)
+end, { desc = 'DAP Widget Float' })
+vim.keymap.set('n', '<Leader>ds', function()
+  local widgets = require 'dap.ui.widgets'
+  widgets.centered_float(widgets.scopes)
+end, { desc = 'DAP Widget Scope' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
