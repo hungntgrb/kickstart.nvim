@@ -227,7 +227,6 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'ThePrimeagen/vim-be-good', -- VimBeGood Game
-  'mfussenegger/nvim-dap',
   {
     'stevearc/oil.nvim',
     ---@module 'oil'
@@ -921,42 +920,170 @@ require('lazy').setup({
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      local harpoon = require 'harpoon'
+    keys = {
+      {
+        '<leader>a',
+        function()
+          require('harpoon'):list():add()
+        end,
+        desc = 'Harpoon: Add current file to buffer list',
+      },
+      {
+        '<C-e>',
+        function()
+          require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())
+        end,
+        desc = 'Harpoon: Toggle buffer list',
+      },
 
-      -- REQUIRED
-      harpoon:setup()
-      -- REQUIRED
-
-      vim.keymap.set('n', '<leader>a', function()
-        harpoon:list():add()
-      end, { desc = 'Harpoon: Add current file to buffer list' })
-      vim.keymap.set('n', '<C-e>', function()
-        harpoon.ui:toggle_quick_menu(harpoon:list())
-      end, { desc = 'Harpoon: Toggle buffer list' })
-
-      vim.keymap.set('n', '<C-t>', function()
-        harpoon:list():select(1)
-      end, { desc = 'Harpoon: Go to buffer #1' })
-      vim.keymap.set('n', '<C-h>', function()
-        harpoon:list():select(2)
-      end, { desc = 'Harpoon: Go to buffer #2' })
-      vim.keymap.set('n', '<C-n>', function()
-        harpoon:list():select(3)
-      end, { desc = 'Harpoon: Go to buffer #3' })
-      vim.keymap.set('n', '<C-s>', function()
-        harpoon:list():select(4)
-      end, { desc = 'Harpoon: Go to buffer #4' })
+      {
+        '<C-t>',
+        function()
+          require('harpoon'):list():select(1)
+        end,
+        desc = 'Harpoon: Go to buffer #1',
+      },
+      {
+        '<C-h>',
+        function()
+          require('harpoon'):list():select(2)
+        end,
+        desc = 'Harpoon: Go to buffer #2',
+      },
+      {
+        '<C-n>',
+        function()
+          require('harpoon'):list():select(3)
+        end,
+        desc = 'Harpoon: Go to buffer #3',
+      },
+      {
+        '<C-s>',
+        function()
+          require('harpoon'):list():select(4)
+        end,
+        desc = 'Harpoon: Go to buffer #4',
+      },
 
       -- Toggle previous & next buffers stored within Harpoon list
-      vim.keymap.set('n', '<C-z>', function()
-        harpoon:list():prev()
-      end, { desc = 'Harpoon: Go to previous buffer' })
-      vim.keymap.set('n', '<C-x>', function()
-        harpoon:list():next()
-      end, { desc = 'Harpoon: Go to next buffer' })
-    end,
+      {
+        '<C-z>',
+        function()
+          require('harpoon'):list():prev()
+        end,
+        desc = 'Harpoon: Go to previous buffer',
+      },
+      {
+        '<C-x>',
+        function()
+          require('harpoon'):list():next()
+        end,
+        desc = 'Harpoon: Go to next buffer',
+      },
+    },
   },
+  {
+    'mfussenegger/nvim-dap',
+    keys = {
+      {
+        '<F5>',
+        function()
+          require('dap').continue()
+        end,
+        desc = 'DAP: Continue',
+      },
+      {
+        '<F10>',
+        function()
+          require('dap').step_over()
+        end,
+        desc = 'DAP: Step Over',
+      },
+      {
+        '<F11>',
+        function()
+          require('dap').step_into()
+        end,
+        desc = 'DAP: Step Into',
+      },
+      {
+        '<F12>',
+        function()
+          require('dap').step_out()
+        end,
+        desc = 'DAP: Step Out',
+      },
+      {
+        '<leader>b',
+        function()
+          require('dap').toggle_breakpoint()
+        end,
+        desc = 'DAP: Toggle Breakpoint',
+      },
+      {
+        '<leader>B',
+        function()
+          require('dap').set_breakpoint()
+        end,
+        desc = 'DAP: Set Breakpoint',
+      },
+      {
+        '<leader>lp',
+        function()
+          require('dap').set_breakpoint(nil, nil, vim.fn.input 'Log point message: ')
+        end,
+        desc = 'DAP: Log point',
+      },
+      {
+        '<leader>dr',
+        function()
+          require('dap').repl.open()
+        end,
+        desc = 'DAP: REPL Open',
+      },
+      {
+        '<leader>dl',
+        function()
+          require('dap').run_last()
+        end,
+        desc = 'DAP: Run last',
+      },
+      {
+        '<leader>dh',
+        function()
+          require('dap.ui.widgets').hover()
+        end,
+        desc = 'DAP: Widget Hover',
+        mode = { 'n', 'v' },
+      },
+      {
+        '<leader>dp',
+        function()
+          require('dap.ui.widgets').preview()
+        end,
+        desc = 'DAP: Widget Preview',
+        mode = { 'n', 'v' },
+      },
+      {
+        '<leader>df',
+        function()
+          local widgets = require 'dap.ui.widgets'
+          widgets.centered_float(widgets.frames)
+        end,
+        desc = 'DAP: Widget Float',
+      },
+      {
+        '<leader>ds',
+        function()
+          local widgets = require 'dap.ui.widgets'
+          widgets.centered_float(widgets.scopes)
+        end,
+        desc = 'DAP: Widget Scope',
+      },
+    },
+  },
+
+  { 'mfussenegger/nvim-dap-python' },
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -1000,48 +1127,6 @@ require('lazy').setup({
     },
   },
 })
-
-vim.keymap.set('n', '<F5>', function()
-  require('dap').continue()
-end, { desc = 'DAP Continue' })
-vim.keymap.set('n', '<F10>', function()
-  require('dap').step_over()
-end, { desc = 'DAP Step Over' })
-vim.keymap.set('n', '<F11>', function()
-  require('dap').step_into()
-end, { desc = 'DAP Step Into' })
-vim.keymap.set('n', '<F12>', function()
-  require('dap').step_out()
-end, { desc = 'DAP Step Out' })
-vim.keymap.set('n', '<Leader>b', function()
-  require('dap').toggle_breakpoint()
-end, { desc = 'DAP Toggle Breakpoint' })
-vim.keymap.set('n', '<Leader>B', function()
-  require('dap').set_breakpoint()
-end, { desc = 'DAP Set Breakpoint' })
-vim.keymap.set('n', '<Leader>lp', function()
-  require('dap').set_breakpoint(nil, nil, vim.fn.input 'Log point message: ')
-end, { desc = 'DAP Log point' })
-vim.keymap.set('n', '<Leader>dr', function()
-  require('dap').repl.open()
-end, { desc = 'DAP REPL Open' })
-vim.keymap.set('n', '<Leader>dl', function()
-  require('dap').run_last()
-end, { desc = 'DAP Run last' })
-vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function()
-  require('dap.ui.widgets').hover()
-end, { desc = 'DAP Widget Hover' })
-vim.keymap.set({ 'n', 'v' }, '<Leader>dp', function()
-  require('dap.ui.widgets').preview()
-end, { desc = 'DAP Widget Preview' })
-vim.keymap.set('n', '<Leader>df', function()
-  local widgets = require 'dap.ui.widgets'
-  widgets.centered_float(widgets.frames)
-end, { desc = 'DAP Widget Float' })
-vim.keymap.set('n', '<Leader>ds', function()
-  local widgets = require 'dap.ui.widgets'
-  widgets.centered_float(widgets.scopes)
-end, { desc = 'DAP Widget Scope' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
