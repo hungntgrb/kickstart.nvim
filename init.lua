@@ -637,6 +637,15 @@ require('lazy').setup({
             },
           },
         },
+        jinja_lsp = {
+          -- cmd = { 'jinja-lsp' },
+          filetypes = { 'jinja', 'htmldjango' },
+        },
+        djlint = {
+          filetypes = { 'htmldjango' },
+        },
+        volar = {},
+        tailwindcss = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -827,7 +836,7 @@ require('lazy').setup({
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'buffer' },
-          -- { name = 'nvim_lsp_signature_help' },
+          { name = 'nvim_lsp_signature_help' },
         },
       }
     end,
