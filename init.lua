@@ -929,166 +929,36 @@ require('lazy').setup({
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
     dependencies = { 'nvim-lua/plenary.nvim' },
+    -- stylua: ignore
     keys = {
-      {
-        '<leader>a',
-        function()
-          require('harpoon'):list():add()
-        end,
-        desc = 'Harpoon: Add current file to buffer list',
-      },
-      {
-        '<C-e>',
-        function()
-          require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())
-        end,
-        desc = 'Harpoon: Toggle buffer list',
-      },
-
-      {
-        '<C-t>',
-        function()
-          require('harpoon'):list():select(1)
-        end,
-        desc = 'Harpoon: Go to buffer #1',
-      },
-      {
-        '<C-h>',
-        function()
-          require('harpoon'):list():select(2)
-        end,
-        desc = 'Harpoon: Go to buffer #2',
-      },
-      {
-        '<C-n>',
-        function()
-          require('harpoon'):list():select(3)
-        end,
-        desc = 'Harpoon: Go to buffer #3',
-      },
-      {
-        '<C-s>',
-        function()
-          require('harpoon'):list():select(4)
-        end,
-        desc = 'Harpoon: Go to buffer #4',
-      },
-
+      { '<leader>a', function() require('harpoon'):list():add() end, desc = 'Harpoon: Add current file to buffer list', },
+      { '<C-e>', function() require('harpoon').ui:toggle_quick_menu(require('harpoon'):list()) end, desc = 'Harpoon: Toggle buffer list', },
+      { '<C-t>', function() require('harpoon'):list():select(1) end, desc = 'Harpoon: Go to buffer #1', },
+      { '<C-h>', function() require('harpoon'):list():select(2) end, desc = 'Harpoon: Go to buffer #2', },
+      { '<C-n>', function() require('harpoon'):list():select(3) end, desc = 'Harpoon: Go to buffer #3', },
+      { '<C-s>', function() require('harpoon'):list():select(4) end, desc = 'Harpoon: Go to buffer #4', },
       -- Toggle previous & next buffers stored within Harpoon list
-      {
-        '<C-z>',
-        function()
-          require('harpoon'):list():prev()
-        end,
-        desc = 'Harpoon: Go to previous buffer',
-      },
-      {
-        '<C-x>',
-        function()
-          require('harpoon'):list():next()
-        end,
-        desc = 'Harpoon: Go to next buffer',
-      },
+      { '<C-z>', function() require('harpoon'):list():prev() end, desc = 'Harpoon: Go to previous buffer', },
+      { '<C-x>', function() require('harpoon'):list():next() end, desc = 'Harpoon: Go to next buffer', },
     },
   },
   {
     'mfussenegger/nvim-dap',
+    -- stylua: ignore
     keys = {
-      {
-        '<F5>',
-        function()
-          require('dap').continue()
-        end,
-        desc = 'DAP: Continue',
-      },
-      {
-        '<F10>',
-        function()
-          require('dap').step_over()
-        end,
-        desc = 'DAP: Step Over',
-      },
-      {
-        '<F11>',
-        function()
-          require('dap').step_into()
-        end,
-        desc = 'DAP: Step Into',
-      },
-      {
-        '<F12>',
-        function()
-          require('dap').step_out()
-        end,
-        desc = 'DAP: Step Out',
-      },
-      {
-        '<leader>b',
-        function()
-          require('dap').toggle_breakpoint()
-        end,
-        desc = 'DAP: Toggle Breakpoint',
-      },
-      {
-        '<leader>B',
-        function()
-          require('dap').set_breakpoint()
-        end,
-        desc = 'DAP: Set Breakpoint',
-      },
-      {
-        '<leader>lp',
-        function()
-          require('dap').set_breakpoint(nil, nil, vim.fn.input 'Log point message: ')
-        end,
-        desc = 'DAP: Log point',
-      },
-      {
-        '<leader>dr',
-        function()
-          require('dap').repl.open()
-        end,
-        desc = 'DAP: REPL Open',
-      },
-      {
-        '<leader>dl',
-        function()
-          require('dap').run_last()
-        end,
-        desc = 'DAP: Run last',
-      },
-      {
-        '<leader>dh',
-        function()
-          require('dap.ui.widgets').hover()
-        end,
-        desc = 'DAP: Widget Hover',
-        mode = { 'n', 'v' },
-      },
-      {
-        '<leader>dp',
-        function()
-          require('dap.ui.widgets').preview()
-        end,
-        desc = 'DAP: Widget Preview',
-        mode = { 'n', 'v' },
-      },
-      {
-        '<leader>df',
-        function()
-          local widgets = require 'dap.ui.widgets'
-          widgets.centered_float(widgets.frames)
-        end,
-        desc = 'DAP: Widget Float',
-      },
-      {
-        '<leader>ds',
-        function()
-          local widgets = require 'dap.ui.widgets'
-          widgets.centered_float(widgets.scopes)
-        end,
-        desc = 'DAP: Widget Scope',
-      },
+      {'<F5>', function() require('dap').continue() end, desc = 'DAP: Continue', },
+      {'<F10>',function()require('dap').step_over() end, desc = 'DAP: Step Over', },
+      {'<F11>', function() require('dap').step_into() end, desc = 'DAP: Step Into', },
+      { '<F12>', function() require('dap').step_out() end, desc = 'DAP: Step Out', },
+      { '<leader>b', function() require('dap').toggle_breakpoint() end, desc = 'DAP: Toggle Breakpoint', },
+      { '<leader>B', function() require('dap').set_breakpoint() end, desc = 'DAP: Set Breakpoint', },
+      { '<leader>lp', function() require('dap').set_breakpoint(nil, nil, vim.fn.input 'Log point message: ') end, desc = 'DAP: Log point', },
+      { '<leader>dr', function() require('dap').repl.open() end, desc = 'DAP: REPL Open', },
+      { '<leader>dl', function() require('dap').run_last() end, desc = 'DAP: Run last', },
+      { '<leader>dh', function() require('dap.ui.widgets').hover() end, desc = 'DAP: Widget Hover', mode = { 'n', 'v' }, },
+      { '<leader>dp', function() require('dap.ui.widgets').preview() end, desc = 'DAP: Widget Preview', mode = { 'n', 'v' }, },
+      { '<leader>df', function() local widgets = require 'dap.ui.widgets' widgets.centered_float(widgets.frames) end, desc = 'DAP: Widget Float', },
+      { '<leader>ds', function() local widgets = require 'dap.ui.widgets' widgets.centered_float(widgets.scopes) end, desc = 'DAP: Widget Scope', },
     },
   },
 
