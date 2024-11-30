@@ -944,25 +944,64 @@ require('lazy').setup({
   },
   {
     'mfussenegger/nvim-dap',
-    -- stylua: ignore
-    keys = {
-      {'<F5>', function() require('dap').continue() end, desc = 'DAP: Continue', },
-      {'<F10>',function()require('dap').step_over() end, desc = 'DAP: Step Over', },
-      {'<F11>', function() require('dap').step_into() end, desc = 'DAP: Step Into', },
-      { '<F12>', function() require('dap').step_out() end, desc = 'DAP: Step Out', },
-      { '<leader>b', function() require('dap').toggle_breakpoint() end, desc = 'DAP: Toggle Breakpoint', },
-      { '<leader>B', function() require('dap').set_breakpoint() end, desc = 'DAP: Set Breakpoint', },
-      { '<leader>lp', function() require('dap').set_breakpoint(nil, nil, vim.fn.input 'Log point message: ') end, desc = 'DAP: Log point', },
-      { '<leader>dr', function() require('dap').repl.open() end, desc = 'DAP: REPL Open', },
-      { '<leader>dl', function() require('dap').run_last() end, desc = 'DAP: Run last', },
-      { '<leader>dh', function() require('dap.ui.widgets').hover() end, desc = 'DAP: Widget Hover', mode = { 'n', 'v' }, },
-      { '<leader>dp', function() require('dap.ui.widgets').preview() end, desc = 'DAP: Widget Preview', mode = { 'n', 'v' }, },
-      { '<leader>df', function() local widgets = require 'dap.ui.widgets' widgets.centered_float(widgets.frames) end, desc = 'DAP: Widget Float', },
-      { '<leader>ds', function() local widgets = require 'dap.ui.widgets' widgets.centered_float(widgets.scopes) end, desc = 'DAP: Widget Scope', },
+    dependencies = {
+      'nvim-neotest/nvim-nio',
+      'rcarriga/nvim-dap-ui',
+      'jay-babu/mason-nvim-dap.nvim',
+      'mfussenegger/nvim-dap-python',
     },
-  },
+    config = function()
+      local dap = require 'dap'
+      local dapui = require 'dapui'
 
-  { 'mfussenegger/nvim-dap-python' },
+      -- dap.setup() nvim-dap ko co .setup
+      dapui.setup()
+
+      local pythonexe
+      if os.getenv 'VIRTUAL_ENV' == nil then
+        pythonexe = 'python'
+      else
+        pythonexe = os.getenv 'VIRTUAL_ENV' .. '/Scripts/python'
+      end
+
+      require('dap-python').setup(pythonexe)
+
+      dap.listeners.before.attach.dapui_config = function()
+        dapui.open()
+      end
+      dap.listeners.before.launch.dapui_config = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated.dapui_config = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited.dapui_config = function()
+        dapui.close()
+      end
+    end,
+    -- stylua: ignore
+    keys = function (_,keys)
+      local dap = require'dap'
+      local widgets = require('dap.ui.widgets')
+      return {
+        {'<F5>', dap.continue, desc = 'DAP: Continue', },
+        {'<F10>',dap.step_over, desc = 'DAP: Step Over', },
+        {'<F11>', dap.step_into, desc = 'DAP: Step Into', },
+        {'<F12>', dap.step_out, desc = 'DAP: Step Out', },
+        {'<leader>b', dap.toggle_breakpoint, desc = 'DAP: Toggle Breakpoint', },
+        {'<leader>B', dap.set_breakpoint, desc = 'DAP: Set Breakpoint', },
+        {'<leader>lp', function() dap.set_breakpoint(nil, nil, vim.fn.input 'Log point message: ') end, desc = 'DAP: Log point', },
+        {'<leader>dr', dap.repl.open, desc = 'DAP: REPL Open', },
+        {'<leader>dl', dap.run_last, desc = 'DAP: Run last', },
+        -- DAP UI Widgets
+        {'<leader>dh', function() widgets.hover() end, desc = 'DAP: Widget Hover', mode = { 'n', 'v' }, },
+        {'<leader>dp', function() widgets.preview() end, desc = 'DAP: Widget Preview', mode = { 'n', 'v' }, },
+        {'<leader>df', function() widgets.centered_float(widgets.frames) end, desc = 'DAP: Widget Float', },
+        {'<leader>ds', function() widgets.centered_float(widgets.scopes) end, desc = 'DAP: Widget Scope', },
+        unpack(keys),
+      }
+    end,
+  },
   {
     'nvim-tree/nvim-tree.lua',
     version = '*',
