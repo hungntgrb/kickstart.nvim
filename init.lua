@@ -641,9 +641,8 @@ require('lazy').setup({
           -- cmd = { 'jinja-lsp' },
           filetypes = { 'jinja', 'htmldjango' },
         },
-        djlint = {
-          filetypes = { 'htmldjango' },
-        },
+        djlint = {},
+        --djlsp = {},
         volar = {},
         tailwindcss = {},
       }
