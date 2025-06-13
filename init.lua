@@ -176,7 +176,7 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 --
--- Hung's keymaps
+-- Hung's keymaps, my keymaps
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Go down and focus center' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Go up and focus center' })
 vim.keymap.set('n', '<leader>z', '"_', { desc = 'Register void' })
@@ -184,6 +184,9 @@ vim.keymap.set('n', '<leader>dl', '<cmd>Telescope diagnostics<CR>', { desc = 'Te
 -- vim.keymap.set('n', '<C-j>', 'ddp', { desc = 'Move current line down 1 line' })
 -- vim.keymap.set('n', '<C-k>', 'ddkkp', { desc = 'Move current line up 1 line' })
 vim.keymap.set('n', '<F5>', '<cmd>echo "This is my kingdom!"<CR>', { noremap = true, desc = 'My F5 keybind' })
+vim.keymap.set('n', '<leader>ftz', '<cmd>set filetype=html<cr>', { desc = 'Set filetype to html' })
+vim.keymap.set('n', '<leader>ftx', '<cmd>set filetype=htmldjango<cr>', { desc = 'Set filetype to htmldjango' })
+-- End Hung's keymaps, my keymaps
 --
 --
 -- [[ Basic Autocommands ]]
