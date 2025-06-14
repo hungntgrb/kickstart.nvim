@@ -184,8 +184,8 @@ vim.keymap.set('n', '<leader>dl', '<cmd>Telescope diagnostics<CR>', { desc = 'Te
 -- vim.keymap.set('n', '<C-j>', 'ddp', { desc = 'Move current line down 1 line' })
 -- vim.keymap.set('n', '<C-k>', 'ddkkp', { desc = 'Move current line up 1 line' })
 vim.keymap.set('n', '<F5>', '<cmd>echo "This is my kingdom!"<CR>', { noremap = true, desc = 'My F5 keybind' })
-vim.keymap.set('n', '<leader>ftz', '<cmd>set filetype=html<cr>', { desc = 'Set filetype to html' })
-vim.keymap.set('n', '<leader>ftx', '<cmd>set filetype=htmldjango<cr>', { desc = 'Set filetype to htmldjango' })
+vim.keymap.set('n', '<leader>tz', '<cmd>set filetype=html<cr>', { desc = 'Set filetype to html' })
+vim.keymap.set('n', '<leader>tx', '<cmd>set filetype=htmldjango<cr>', { desc = 'Set filetype to htmldjango' })
 -- End Hung's keymaps, my keymaps
 vim.lsp.enable 'ruff'
 --
