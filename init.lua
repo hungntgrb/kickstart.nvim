@@ -187,6 +187,7 @@ vim.keymap.set('n', '<F5>', '<cmd>echo "This is my kingdom!"<CR>', { noremap = t
 vim.keymap.set('n', '<leader>ftz', '<cmd>set filetype=html<cr>', { desc = 'Set filetype to html' })
 vim.keymap.set('n', '<leader>ftx', '<cmd>set filetype=htmldjango<cr>', { desc = 'Set filetype to htmldjango' })
 -- End Hung's keymaps, my keymaps
+vim.lsp.enable 'ruff'
 --
 --
 -- [[ Basic Autocommands ]]
